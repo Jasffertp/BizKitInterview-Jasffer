@@ -12,19 +12,28 @@ def search():
 
 
 def search_users(args):
-    """Search users database
+    # Return default data if no parameters
+    if not args:
+        return USERS
+    
+    return [user for user in USERS if filter_users(user, args)]
 
-    Parameters:
-        args: a dictionary containing the following search parameters:
-            id: string
-            name: string
-            age: string
-            occupation: string
+def filter_users(user, args):
+    if 'id' in args and args['id'] != '' and args['id'] == user['id']:
+        return True
+    
+    if 'name' in args and args['name'] != '' and args['name'] in user['name']:
+        return True
+    
+    if 'age' in args and args['age'] != '':
+        age = int(args['age'])
+        ageRange = [age, age-1, age + 1]
 
-    Returns:
-        a list of users that match the search parameters
-    """
+        if user['age'] in ageRange:
+            return True
+        
+    if 'occupation' in args and args['occupation'] and args['occupation'] in user['occupation']:
+        return True
+    
+    return False
 
-    # Implement search here!
-
-    return USERS
